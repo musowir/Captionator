@@ -212,9 +212,9 @@ def index():
 
 				reader.onload = function (e) {
 					$('#image-preview').attr('src', e.target.result);
-					//$('#image-caption-malayalam').text('ചിത്രത്തിന്റെ വിവരണം');
-					//$('#image-caption-english').text('Caption of the image');
-					//$('#image-hashtags').text('#nature #landscape #photography #nature #landscape #photography #nature #landscape #photography');
+					$('#image-caption-malayalam').hide();
+					$('#image-caption-english').hide();
+					$('#image-hashtags').hide();
                     $('#spinner').show(); // show spinner when image is uploaded
 
 					// Send image file to server API
@@ -228,6 +228,9 @@ def index():
 						cache: false,
 						processData: false,
 						success: function (data) {
+                        	$('#image-caption-malayalam').show();
+							$('#image-caption-english').show();
+							$('#image-hashtags').show();
 							$('#image-caption-malayalam').text(data.malayalam);
 							$('#image-caption-english').text(data.english);
 							$('#image-hashtags').text(data.hashtags);
