@@ -5,7 +5,7 @@ body{
 }
 
 .wrap-head{
-  background-color: rgb(7, 193, 193);
+  background-color: rgba(7, 193, 193, 0.505);
 }
 
 header {
@@ -16,8 +16,7 @@ header {
   font-weight: bold;
   text-transform: uppercase;
   text-align: center;
-  /* background: linear-gradient(45deg, #d242d2, #c347c3, #3e3ed7, #33c633, #e1e144, #be3030, #bc27bc); */
-  background: linear-gradient(45deg, #000000, #151515, #000000, #181818);
+  background-color: rgba(0, 128, 128, 0.326);
   background-size: 600%;
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
@@ -173,10 +172,13 @@ order: -1;
 .content {
   flex-grow: 1; /* Grow content to fill remaining space */
 }
-
+.page-footer{
+  background-color: #00b8d482;
+}
 footer {
   width: 100%;
   position: relative;
+  background-color: #00b8d482;
   bottom: 0;
   margin-top: auto; /* Push footer to bottom of wrapper */
 }
