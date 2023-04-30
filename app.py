@@ -36,22 +36,34 @@ with open(r'IPYNBs\max_length.pkl', 'rb') as f:
 image_features_extract_model = load_model('IPYNBs\image_features_extract_model.h5')
 attention_features_shape = 49
 
+import re
+
+def replace_repeated_phrase(sentence):
+    # Find all repeated phrases in the sentence
+    pattern = re.compile(r'(\w+\W*[\w+\W*]*)(?:\W+\1\b)+')
+    repeated_phrases = pattern.findall(sentence)
+
+    # Replace each repeated phrase with just one occurrence
+    for phrase in repeated_phrases:
+        sentence = sentence.replace(f"{phrase} ", "", sentence.count(phrase)-1)
+
+    return sentence
 
 # define a function to plot the attention maps for each word generated
 
-def plot_attention(image, result, attention_plot):
-    temp_image = np.array(Image.open(image))
-    fig = plt.figure(figsize=(10, 10))
-    len_result = len(result)
-    for l in range(len_result):
-        temp_att = np.resize(attention_plot[l], (8, 8))
-        ax = fig.add_subplot(len_result//2, len_result//2, l+1)
-        ax.set_title(result[l])
-        img = ax.imshow(temp_image)
-        ax.imshow(temp_att, cmap='gray', alpha=0.6, extent=img.get_extent())
+# def plot_attention(image, result, attention_plot):
+#     temp_image = np.array(Image.open(image))
+#     fig = plt.figure(figsize=(10, 10))
+#     len_result = len(result)
+#     for l in range(len_result):
+#         temp_att = np.resize(attention_plot[l], (8, 8))
+#         ax = fig.add_subplot(len_result//2, len_result//2, l+1)
+#         ax.set_title(result[l])
+#         img = ax.imshow(temp_image)
+#         ax.imshow(temp_att, cmap='gray', alpha=0.6, extent=img.get_extent())
 
-    plt.tight_layout()
-    plt.show()
+#     plt.tight_layout()
+#     plt.show()
 
 
 def evaluate(image):
@@ -89,34 +101,7 @@ def load_image(image_path):
     return img, image_path
 
 
-#hashtag gen
-def split_remove_synonyms_join(sentence):
-    # Split the sentence into words
-    words = nltk.word_tokenize(sentence)
 
-    # Remove stop words
-    stop_words = set(stopwords.words('english'))
-    words = [word for word in words if word.lower() not in stop_words]
-
-    # Find synonyms for each word
-    synonyms = []
-    for word in words:
-        word_synonyms = []
-        for syn in wordnet.synsets(word):
-            for lemma in syn.lemmas():
-                word_synonyms.append(lemma.name())
-        if word_synonyms:
-            synonyms.append(word_synonyms)
-        else:
-            synonyms.append([word])
-
-    # Join the list of synonyms for each word into a comma-separated string
-    synonym_str = ''
-    for word_synonyms in list(set(synonyms)):
-        synonym_str += '#'.join(word_synonyms) + ' '
-
-    # Remove the trailing comma and return the resulting string
-    return synonym_str[:-1]
 
 
 app = Flask(__name__)
@@ -136,6 +121,7 @@ def upload_image():
     start = time.time()
     # real_caption = ' '.join([tokenizer.index_word[i] for i in cap_val[rid] if i not in [0]])
     result, attention_plot = evaluate(pt)
+    
 
     # remove <start> and <end> from the real_caption
     # first = real_caption.split(' ', 1)[1]
@@ -153,7 +139,8 @@ def upload_image():
     # remove <end> from result
     result_join = ' '.join(result)
     result_final = result_join.rsplit(' ', 1)[0]
-
+    for j in range(len(result_final.split())//2):
+        result_final = replace_repeated_phrase(result_final)
     # real_appn = []
     # real_appn.append(real_caption.split())
     # reference = real_appn
@@ -248,9 +235,9 @@ def index():
 <body>
 	<div class="wrap-head">
 
-		<header class="header-container teal">
+		<header class="header-container">
 			<!-- <img class="gif-image" src="https://media.giphy.com/media/i2tUkY5YrfN85y1W0P/giphy.gif"> -->
-			<h1 class="header-text">&lt;!Captionator&gt;</h1>
+			<h1 class="header-text" style="color: #fff;">&lt;!Captionator&gt;</h1>
 		</header>
 	</div>
 	<div class="wrapper">

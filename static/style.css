@@ -5,7 +5,7 @@ body{
 }
 
 .wrap-head{
-  background-color: rgba(7, 193, 193, 0.505);
+  background-color: rgb(7, 193, 193);
 }
 
 header {
@@ -16,16 +16,15 @@ header {
   font-weight: bold;
   text-transform: uppercase;
   text-align: center;
-  background-color: rgba(0, 128, 128, 0.326);
   background-size: 600%;
-  -webkit-background-clip: text;
+  /* -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
-  animation: gradient 15s ease infinite;
+  animation: gradient 15s ease infinite; */
   
 }
 
 
-@keyframes gradient {
+/* @keyframes gradient {
   0% {
     background-position: 0% 50%;
   }
@@ -35,10 +34,11 @@ header {
   100% {
     background-position: 0% 50%;
   }
-}
+} */
 
 .header-text{
- font-size: 2.5em; 
+ font-size: 2.5em;
+ color: rgb(34, 15, 157); 
 }
 .gif-image {
 	height: 100px;
