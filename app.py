@@ -13,6 +13,7 @@ from tensorflow.keras.applications.vgg19 import preprocess_input
 import os
 import time
 from tensorflow.keras.models import load_model
+import re
 
 # load the model from the saved directory
 model_dir = 'models\decoder'
@@ -103,6 +104,17 @@ def load_image(image_path):
 
 
 
+# remove repeated phrases
+def replace_repeated_phrase(sentence):
+    # Find all repeated phrases in the sentence
+    pattern = re.compile(r'(\w+\W*[\w+\W*]*)(?:\W+\1\b)+')
+    repeated_phrases = pattern.findall(sentence)
+
+    # Replace each repeated phrase with just one occurrence
+    for phrase in repeated_phrases:
+        sentence = sentence.replace(f"{phrase} ", "", sentence.count(phrase)-1)
+
+    return sentence
 
 app = Flask(__name__)
 
@@ -153,7 +165,7 @@ def upload_image():
     # print(f"BELU score: {score*100}")
 
     # print ('Real Caption:', real_caption)
-    print('Prediction Caption:', result_final)
+    # print('Prediction Caption:', result_final)
 
     # Generate captions (example data)
     captions = {
