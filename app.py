@@ -184,18 +184,34 @@ def index():
     <html>
 
 <head>
-	<title>Captionator</title>
-	<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
-
-	<link rel="stylesheet" href="static/style.css">
-
-	<link rel="preconnect" href="https://fonts.gstatic.com">
-	<link href="https://fonts.googleapis.com/css2?family=Monoton&display=swap" rel="stylesheet">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.3/css/all.css"
-		integrity="sha384-zPyKgmxp0wbsi0skzvBWP1N9dhgYDj2nCzSHfu6GgZjKt1nBbqn/KdEJ8l+1rxId" crossorigin="anonymous">
+	  <title>Captionator</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <!-- Import Material UI CSS -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+  <!-- Import Material UI icons -->
+  <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons" />
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Roboto', sans-serif;
+        }
+        .header {
+            background-color: #26a69a;
+            color: #fff;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .header h1 {
+            font-size: 36px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+        }
+    </style>
 
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 		<script>
@@ -214,6 +230,8 @@ def index():
 					$('#image-caption-malayalam').hide();
 					$('#image-caption-english').hide();
 					$('#image-hashtags').hide();
+                    $('#captionpart').show();
+                    $('#progessdiv').show();
                     $('#spinner').show(); // show spinner when image is uploaded
 
 					// Send image file to server API
@@ -230,10 +248,12 @@ def index():
                         	$('#image-caption-malayalam').show();
 							$('#image-caption-english').show();
 							$('#image-hashtags').show();
+                            
 							$('#image-caption-malayalam').text(data.malayalam);
 							$('#image-caption-english').text(data.english);
 							$('#image-hashtags').text(data.hashtags);
                             $('#spinner').hide(); // hide spinner when image is processed
+                            $('#progessdiv').hide();
 						}
 					});
 				}
@@ -245,98 +265,52 @@ def index():
 </head>
 
 <body>
-	<div class="wrap-head">
+     <div class="header">
+        <h1>&lt;!Captionator&gt;</h1>
+    </div>
+  <div class="container">
+    <div class="row">
+      <div class="col s12">
+        <div class="file-field input-field">
+          <div class="btn">
+            <span>File</span>
+            <input type="file" id="image-upload" accept=".png, .jpg, .jpeg" name="image" />
+          </div>
+          <div class="file-path-wrapper">
+            <input class="file-path validate" type="text" placeholder="Upload an image" />
+          </div>
+        </div>
+      </div>
+      <div class="col s12">
+        <div class="row">
+          <div class="col s12 m6">
+            <div class="card">
+              <div class="card-image">
+                <img id="image-preview" />
+              </div>
+            </div>
+          </div>
+          <div class="col s12 m6" id="captionpart" style="display:none;">
+            <div class="card">
+              <div class="card-content">
+                <div id="image-caption-malayalam"></div>
+                <div id="image-caption-english"></div>
+                <div id="image-hashtags"></div>
+              </div>
+              <div class="card-action" id="progessdiv">
+                <div class="progress" id="spinner" style="display:none;">
+                  <div class="indeterminate"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 
-		<header class="header-container">
-			<!-- <img class="gif-image" src="https://media.giphy.com/media/i2tUkY5YrfN85y1W0P/giphy.gif"> -->
-			<h1 class="header-text" style="color: #fff;">&lt;!Captionator&gt;</h1>
-		</header>
-	</div>
-	<div class="wrapper">
-		<div class="container handler">
-			<div class="row">
-				<div class="col s12">
-					<div class="file-field input-field">
-						<div class="btn">
-							<span>File</span>
-							<input type="file" id="image-upload" accept=".png, .jpg, .jpeg" name="image">
-						</div>
-						<div class="file-path-wrapper">
-							<input class="file-path validate" type="text" placeholder="Upload an image">
-						</div>
-					</div>
-				</div>
-				<div class="col s12">
-					<div class="row">
-						<div class="col s12 l6">
-							<div class="image-container">
-								<img id="image-preview" class="responsive-img">
-							</div>
-						</div>
-						<div class="col s12 l5">
-							<div class="caption-container">
-								<div id="image-caption-malayalam"></div>
-								<div id="image-caption-english"></div>
-								<div id="image-hashtags"></div>
-                                    <div class="preloader-wrapper big active" id="spinner" style="display:none;">
-                                        <div class="spinner-layer spinner-green-only">
-                                            <div class="circle-clipper left">
-                                            <div class="circle"></div>
-                                            </div><div class="gap-patch">
-                                            <div class="circle"></div>
-                                            </div><div class="circle-clipper right">
-                                            <div class="circle"></div>
-                                            </div>
-                                        </div></div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<br>
-
-		<footer class="page-footer teal">
-			<div class="container">
-				<div class="row">
-					<div class="col s12 m6 l4">
-						<h5 class="white-text " style="font-family: 'Monoton', cursive;text-transform: uppercase;">
-							&lt;Captionator &sol; &gt;</h5>
-						<p class="grey-text text-lighten-4">A caption & #tags generator for your photos</p>
-						<ul>
-							<li><a class="grey-text text-lighten-3" href="#!"><i class="bi bi-twitter"></i> Twitter</a>
-							</li>
-							<li><a class="grey-text text-lighten-3" href="#!"><i class="bi bi-meta"></i> Meta</a></li>
-							<li><a class="grey-text text-lighten-3" href="#!"><i class="bi bi-instagram"></i>
-									Instagram</a></li>
-						</ul>
-					</div>
-					<div class="col s12 m6 l3">
-						<h5 class="white-text">Explore</h5>
-						<ul>
-							<li><a class="grey-text text-lighten-3" href="#!">Home</a></li>
-							<li><a class="grey-text text-lighten-3" href="#!">About Us</a></li>
-							<li><a class="grey-text text-lighten-3" href="#!">Services</a></li>
-							<li><a class="grey-text text-lighten-3" href="#!">Contact</a></li>
-						</ul>
-					</div>
-					<div class="col s12 m12 l3">
-						<h5 class="white-text">Contact Us</h5>
-						<ul>
-							<li><a class="grey-text text-lighten-3" href="#!"><i class="bi bi-telephone-fill"></i> +1
-									(555) 123-4567</a></li>
-							<li><a class="grey-text text-lighten-3" href="#!"><i class="bi bi-envelope-paper-fill"></i>
-									info@captionator.com</a></li>
-							<li><a class="grey-text text-lighten-3" href="#!"><i class="bi bi-geo-alt-fill"></i> 123
-									Main St, Anytown USA</a></li>
-						</ul>
-					</div>
-				</div>
-			</div>
-		</footer>
-	</div>
-
+  <!-- Import Material UI JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 </body>
 
 </html>
