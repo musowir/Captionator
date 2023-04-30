@@ -1,16 +1,9 @@
-import base64
-from flask import Flask, render_template, request, jsonify
-import nltk
-from nltk.corpus import stopwords
-from nltk.corpus import wordnet
+
+from flask import Flask, request, jsonify
 import tensorflow as tf
 import numpy as np
-import matplotlib.pyplot as plt
-from PIL import Image
-from nltk.translate.bleu_score import sentence_bleu, SmoothingFunction
 import pickle
 from tensorflow.keras.applications.vgg19 import preprocess_input
-import os
 import time
 from tensorflow.keras.models import load_model
 import re
